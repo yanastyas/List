@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 import static jdk.nashorn.internal.objects.NativeString.toLowerCase;
@@ -48,20 +46,32 @@ public class Main {
 
     private static void delProduct(ArrayList<String> shoppingList, Scanner scanner) {
         System.out.println("Какую покупку хотите удалить? Введите номер или название: ");
-        String input = scanner.nextLine();
-        int product = Integer.parseInt(input) - 1;
-        System.out.println("Покупка " + shoppingList.get(product) + " - удалено, список продуктов: ");
-        shoppingList.remove(product);
-        try {
+        String product = scanner.nextLine();
+        if (shoppingList.remove(product)) {
+            System.out.println("Покупка " + product + "- удалено. ");
             System.out.println("Список покупок: ");
             for (int i = 0; i < shoppingList.size(); i++) {
                 System.out.println((i + 1) + " : " + shoppingList.get(i));
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Покупка " + input + "- удалено, список покупок: ");
-            shoppingList.remove(input);
+        } else {
+            int input = 0;
+            try {
+                input = Integer.parseInt(product);
+                if ((input > 0) & (input <= shoppingList.size())) {
+                    shoppingList.remove(input - 1);
+                    System.out.println("Покупка " + input + "- удалено. ");
+                }
+                System.out.println("Список покупок: ");
+                for (int i = 0; i < shoppingList.size(); i++) {
+                    System.out.println((i + 1) + " : " + shoppingList.get(i));
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Покупка " + input + "- удалено, список покупок: ");
+                shoppingList.remove(input);
+            }
         }
     }
+
 
     private static void searchProduct(ArrayList<String> shoppingList, Scanner scanner) {
         System.out.println("Введите текст для поиска: ");
